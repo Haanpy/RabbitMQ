@@ -23,8 +23,8 @@ func main() {
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"logs_direct",
-		"direct",
+		"logs_topic",
+		"topic",
 		true,
 		false,
 		false,
