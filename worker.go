@@ -24,12 +24,12 @@ func main() {
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-		"task_queue", // name
-		true,         // durable
-		false,        // delete when unused
-		false,        // exclusive
-		false,        // no-wait
-		nil,          // arguments
+		"",    // name
+		false, // durable
+		false, // delete when unused
+		true,  // exclusive
+		false, // no-wait
+		nil,   // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
 
@@ -39,6 +39,17 @@ func main() {
 		false,
 	)
 	failOnError(err, "Failed to set QoS")
+
+	// err = ch.ExchangeDeclare(
+	// 	"logs",
+	// 	"fanout",
+	// 	true,
+	// 	false,
+	// 	false,
+	// 	false,
+	// 	nil,
+	// )
+	// failOnError(err, "Failed to declare an exchange")
 
 	msgs, err := ch.Consume(
 		q.Name, // queue
