@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/streadway/amqp"
@@ -36,13 +37,15 @@ func main() {
 
 	body := bodyFrom(os.Args)
 	err = ch.Publish(
-		"logs_topic",
-		severityFrom(os.Args),
+		"",
+		"rpc_queue",
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(body),
+			ContentType:   "text/plain",
+			CorrelationId: corrId,
+			ReplyTo:       q.Name,
+			Body:          []byte(strconv.Itoa(n)),
 		})
 	failOnError(err, "Failed to publish a message")
 
